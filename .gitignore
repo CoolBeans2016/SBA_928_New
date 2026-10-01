@@ -1,0 +1,5 @@
+fine_tuned_model/
+Kaggle dataset/
+.venv/
+__pycache__/
+*.safetensors
