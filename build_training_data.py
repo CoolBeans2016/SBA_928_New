@@ -125,7 +125,6 @@ def t_switching(d):
 
 
 TOPICS = [
-    TOPICS = [
     ("Consumer behavior", "visit frequency", t_visit_frequency, "how often people buy things through the Internet and how many times they visit the website"),
     ("Consumer behavior", "visits and buying", t_conversion, "how the number of website visits relates to whether people bought their vehicle on the site"),
     ("Consumer behavior", "online attitudes", t_attitudes, "attitudes toward the Internet and the Auto Online website"),
@@ -134,8 +133,6 @@ TOPICS = [
     ("Competitor analysis", "pricing transparency", t_pricing, "vehicle prices, trade-in values and perceived value when buying online"),
     ("Competitor analysis", "switching and gaps", t_switching, "reservations about online dealerships compared with the traditional dealership process"),
 ]
-]
-
 # ------------------------------------------------ prompt styles (variations)
 STYLES = [
     ("question", "What do the survey results show about {core} among {seg}?"),
@@ -144,8 +141,6 @@ STYLES = [
     ("strategist persona", "As a marketing strategist, what should we know about {core} among {seg}?"),
     ("bullet format", "List the key findings on {core} for {seg} as bullet points."),
     ("descriptive-only", "Describe {core} for {seg}. Stick to what the data shows and do not generalize beyond the sample."),  
-    ("Market trends", "What do the survey results show about how respondents found out about Auto Online among male respondents?"),
-    ("Consumer behavior", "What do the survey results show about attitudes toward the Internet and the Auto Online website among female respondents?"),
 ]
 
 

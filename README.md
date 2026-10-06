@@ -1,36 +1,65 @@
-# SBA928-Enhancing-Market-Research-with-AI-Prompt-Engineering
-Requirements
+# SBA 928: Market Research with Prompt Engineering
 
-Diverse AI Prompt Generation:
+This project uses a 1,400-respondent automobile-market survey to build a
+market-research prompt dataset, fine-tune `distilgpt2` with LoRA, compare
+original and fine-tuned responses, and examine bias and fairness limits.
 
-Sourcing a Dataset: 
+## Final report
 
-Use publicly available datasets related to market research from platforms such as Kaggle, Google Dataset Search, or UCI Machine Learning Repository. Alternatively, students can create a dataset by gathering publicly available market reports, surveys, or consumer data from reliable industry sources.
+Read [SBA_928_Report.md](./SBA_928_Report.md) for the experiment, prompt and
+dataset summary, qualitative model evaluation, bias analysis, limitations,
+and conclusions. The evaluation uses saved comparison outputs; the current
+worktree's `comparison_results.md` is deleted, and no fresh model comparison
+was run.
 
-Create a Dataset:
+## Repository guide
 
-Using the sourced Dataset, curate a collection of prompts that cover various aspects such as consumer behavior, market trends, and competitor analysis. The aim is to generate prompts that explore different dimensions of market research and gather comprehensive insights.
+- `download_dataset.py` inspects the SPSS survey file in `Kaggle dataset/`.
+- `build_training_data.py` builds `training_data.jsonl` and
+  `prompt_summary.md`.
+- `fine_tune.py` trains and saves a LoRA adapter under `fine_tuned_model/`.
+- `compare_models.py` compares the base model and local adapter.
+- `bias_check.py` performs the data/prompt audit; pass `--models` for its
+  additional counterfactual model test.
+- `audit.md`, `checklist.md`, and `implementation.md` record the fixes and
+  remaining validation steps.
 
-Prompt Variations:
+## Environment
 
-Develop multiple variations of prompts from the dataset to elicit a range of responses. Discuss the approaches used to create these variations and how they can be applied to different market research scenarios. This will highlight the ability of AI to provide diverse and nuanced insights.
+The project uses Python 3.14 and `uv`. Install the declared dependencies with:
 
-Fine-Tuning Language Models:
+```powershell
+uv sync --locked
+```
 
-Fine-Tuning Experiment:
+**Package download warning:** syncing can download large dependencies,
+especially PyTorch, and can take time and disk space.
 
-Choose a language model and fine-tune it using the prompts developed in the previous requirement. Detail the fine-tuning process, including steps for data preparation, training, and adjustments made to enhance the model’s performance in generating market research insights.
+## Safe validation
 
-Comparison with Original Model:
+Compile the repaired scripts without loading models:
 
-Compare the outputs of the fine-tuned model with those of the original model. Analyze the improvements in the relevance and accuracy of market research insights and assess the effectiveness of the fine-tuning process.
+```powershell
+uv run --no-sync python -m py_compile .\build_training_data.py .\compare_models.py
+```
 
-Bias Analysis and Fairness Strategies:
+**Before rebuilding the dataset:** `build_training_data.py` writes and replaces
+`training_data.jsonl` and `prompt_summary.md`. Preserve any versions you need
+before running:
 
-Bias Assessment:
+```powershell
+uv run --no-sync python .\build_training_data.py
+```
 
-Evaluate the prompts for any potential biases that might affect the quality and fairness of market research insights. Discuss methods for detecting and mitigating biases to ensure that the AI-generated data reflects diverse and equitable perspectives.
+**Before comparing models:** the Transformers libraries may download base
+model files if not cached. The comparison takes time and memory and writes
+`comparison_results.md` in truncate mode. Preserve any report you need before
+running:
 
-Strategies for Fairness:
+```powershell
+uv run --no-sync python .\compare_models.py
+```
 
-Propose strategies and techniques to ensure fairness in prompt generation for market research. Consider the various aspects of market research such as demographic diversity, regional differences, and industry-specific contexts to ensure comprehensive and unbiased insights.
+Fine-tuning is a longer-running training operation and writes to the existing,
+Git-ignored `fine_tuned_model/` directory. Do not run it unless you intend to
+train again and preserve or replace those local model artifacts.
